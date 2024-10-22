@@ -222,7 +222,7 @@ apt-get update
 
 > Pulau Paradis telah menjadi tempat yang damai selama 1000 tahun, namun kedamaian tersebut tidak bertahan selamanya. Perang antara kaum Marley dan Eldia telah mencapai puncak. Kaum Marley yang dipimpin oleh Zeke, me-register domain name **marley.yyy.com** untuk worker Laravel mengarah pada **Annie**. Namun ternyata tidak hanya kaum Marley saja yang berinisiasi, kaum Eldia ternyata sudah mendaftarkan domain name **eldia.yyy.com** untuk worker PHP (0) mengarah pada **Armin**.
 
-### Konfigurasi pada DNS Server
+### Konfigurasi pada Fritz (DNS Server)
 
 ```sh
 echo 'zone "marley.it24.com" {
@@ -284,3 +284,17 @@ echo 'options {
 
 service bind9 restart
 ```
+
+## Soal 1
+
+> Lakukan konfigurasi sesuai dengan peta yang sudah diberikan.
+
+* [Topologi](#topologi)
+* [Tabel IP](#tabel-ip)
+* [Konfigurasi IP](#konfigurasi-ip)
+
+## Soal 2
+
+> 
+
+### Konfigur
