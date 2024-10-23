@@ -295,6 +295,147 @@ service bind9 restart
 
 ## Soal 2
 
-> 
+> Client yang melalui bangsa marley mendapatkan range IP dari [prefix IP].1.05 - [prefix IP].1.25 dan [prefix IP].1.50 - [prefix IP].1.100
 
-### Konfigur
+### Konfigurasi pada Tybur (DHCP Server)
+
+```sh
+echo '
+subnet 192.245.1.0 netmask 255.255.255.0 {
+range 192.245.1.05 192.245.1.25;
+range 192.245.1.50 192.245.1.100;
+}
+' > /etc/dhcp/dhcpd.conf
+
+service isc-dhcp-server restart
+```
+
+## Soal 3
+
+> Client yang melalui bangsa eldia mendapatkan range IP dari [prefix IP].2.09 - [prefix IP].2.27 dan [prefix IP].2 .81 - [prefix IP].2.243
+
+### Konfigurasi pada Tybur (DHCP Server)
+
+```sh
+echo '
+subnet 192.245.1.0 netmask 255.255.255.0 {
+	range 192.245.1.05 192.245.1.25;
+	range 192.245.1.50 192.245.1.100;
+}
+
+subnet 192.245.2.0 netmask 255.255.255.0 {
+	range 192.245.2.09 192.245.2.27;
+	range 192.245.2.81 192.245.2.243;
+}
+' > /etc/dhcp/dhcpd.conf
+
+service isc-dhcp-server restart
+```
+
+## Soal 4
+
+> Client mendapatkan DNS dari keluarga Fritz dan dapat terhubung dengan internet melalui DNS tersebut 
+
+### Konfigurasi pada Paradis (DHCP Relay)
+```sh
+echo '
+SERVERS="192.245.4.2"
+INTERFACES="eth1 eth2 eth3 eth4"
+OPTIONS=""
+' > /etc/default/isc-dhcp-relay
+
+echo '
+net.ipv4.ip_forward=1
+' > /etc/sysctl.conf
+
+service isc-dhcp-relay restart
+```
+
+### Konfigurasi pada Tybur (DHCP Server)
+```sh
+echo '
+INTERFACESv4="eth0"
+INTERFACESv6=""
+' > /etc/default/isc-dhcp-server
+
+echo '
+subnet 192.245.1.0 netmask 255.255.255.0 {
+	range 192.245.1.05 192.245.1.25;
+	range 192.245.1.50 192.245.1.100;
+	option routers 192.245.1.1;
+	option broadcast-address 192.245.1.255;
+	option domain-name-servers 192.245.4.3;
+}
+
+subnet 192.245.2.0 netmask 255.255.255.0 {
+	range 192.245.2.09 192.245.2.27;
+	range 192.245.2.81 192.245.2.243;
+	option routers 192.245.2.1;
+	option broadcast-address 192.245.1.255;
+	option domain-name-servers 192.245.4.3;
+}
+
+subnet 192.245.3.0 netmask 255.255.255.0 {
+	option routers 192.245.3.1;
+}
+
+subnet 192.245.4.0 netmask 255.255.255.0 {
+	option routers 192.245.4.1;
+}
+' > /etc/dhcp/dhcpd.conf
+
+service isc-dhcp-server restart
+```
+
+## Soal 5
+
+> Dikarenakan keluarga Tybur tidak menyukai kaum eldia, maka mereka hanya meminjamkan ip address ke kaum eldia selama 6 menit. Namun untuk kaum marley, keluarga Tybur meminjamkan ip address selama 30 menit. Waktu maksimal dialokasikan untuk peminjaman alamat IP selama 87 menit.
+
+Sedikit matematika diperlukan dalam menambahkan lease time pada setiap client yang terhubung:
+* `6 menit * 60 detik = 360 detik`
+* `30 menit * 60 detik = 1800 detik`
+* `87 menit * 60 detik = 5220 detik`
+
+### Konfigurasi pada Tybur (DHCP Server)
+```sh
+echo '
+INTERFACESv4="eth0"
+INTERFACESv6=""
+' > /etc/default/isc-dhcp-server
+
+echo '
+subnet 192.245.1.0 netmask 255.255.255.0 {
+	range 192.245.1.5 192.245.1.25;
+	range 192.245.1.50 192.245.1.100;
+	option routers 192.245.1.1;
+	option broadcast-address 192.245.1.255;
+	option domain-name-servers 192.245.4.3;
+	default-lease-time 360;
+	max-lease-time 5220;
+}
+
+subnet 192.245.2.0 netmask 255.255.255.0 {
+	range 192.245.2.9 192.245.2.27;
+	range 192.245.2.81 192.245.2.243;
+	option routers 192.245.2.1;
+	option broadcast-address 192.245.1.255;
+	option domain-name-servers 192.245.4.3;
+	default-lease-time 1800;
+	max-lease-time 5220;
+}
+
+subnet 192.245.3.0 netmask 255.255.255.0 {
+	option routers 192.245.3.1;
+}
+
+subnet 192.245.4.0 netmask 255.255.255.0 {
+	option routers 192.245.4.1;
+}
+' > /etc/dhcp/dhcpd.conf
+
+service isc-dhcp-server restart
+```
+
+### Bukti Client Terhubung
+
+![client dhcp](assets/gallery/lease.png)
