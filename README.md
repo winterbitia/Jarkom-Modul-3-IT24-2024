@@ -7,7 +7,7 @@
 
 ## Daftar Isi
 
-Bikin secara otomatis pake plugin aja nti jangan manual pls
+(daftar isi)
 
 ## Pendahuluan
 
@@ -302,7 +302,7 @@ service bind9 restart
 ```sh
 echo '
 subnet 192.245.1.0 netmask 255.255.255.0 {
-range 192.245.1.05 192.245.1.25;
+range 192.245.1.5 192.245.1.25;
 range 192.245.1.50 192.245.1.100;
 }
 ' > /etc/dhcp/dhcpd.conf
@@ -319,7 +319,7 @@ service isc-dhcp-server restart
 ```sh
 echo '
 subnet 192.245.1.0 netmask 255.255.255.0 {
-	range 192.245.1.05 192.245.1.25;
+	range 192.245.1.5 192.245.1.25;
 	range 192.245.1.50 192.245.1.100;
 }
 
