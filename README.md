@@ -54,6 +54,10 @@
 	- [Soal 7](#soal-7)
 		- [Konfigurasi pada Colossal (Load Balancer PHP)](#konfigurasi-pada-colossal-load-balancer-php)
 		- [Konfigurasi pada Fritz (DNS Server)](#konfigurasi-pada-fritz-dns-server-1)
+		- [Test Request](#test-request)
+	- [Soal 8](#soal-8)
+	- [Soal 9](#soal-9)
+	- [Soal 10](#soal-10)
 
 
 ## Pendahuluan
@@ -549,6 +553,8 @@ service nginx restart
 
 ## Soal 7
 
+> Dikarenakan Armin sudah mendapatkan kekuatan titan colossal, maka bantulah kaum eldia menggunakan colossal agar dapat bekerja sama dengan baik. Kemudian lakukan testing dengan 6000 request dan 200 request/second. 
+
 ### Konfigurasi pada Colossal (Load Balancer PHP)
 ```sh
 cp /etc/nginx/sites-available/default /etc/nginx/sites-available/lb_php
@@ -646,3 +652,21 @@ echo 'options {
 
 service bind9 restart
 ```
+### Test Request
+
+
+## Soal 8
+
+> Karena Erwin meminta “laporan kerja Armin”, maka dari itu buatlah analisis hasil testing dengan 1000 request dan 75 request/second untuk masing-masing algoritma Load Balancer dengan ketentuan sebagai berikut:
+a. Nama Algoritma Load Balancer
+b. Report hasil testing pada Apache Benchmark
+c. Grafik request per second untuk masing masing algoritma. 
+d. Analisis
+
+## Soal 9
+
+> Dengan menggunakan algoritma Least-Connection, lakukan testing dengan menggunakan 3 worker, 2 worker, dan 1 worker sebanyak 1000 request dengan 10 request/second, kemudian tambahkan grafiknya pada “laporan kerja Armin”.
+
+## Soal 10
+
+> Selanjutnya coba tambahkan keamanan dengan konfigurasi autentikasi di Colossal dengan dengan kombinasi username: “arminannie” dan password: “jrkmyyy”, dengan yyy merupakan kode kelompok. Terakhir simpan file “htpasswd” nya di /etc/nginx/supersecret/ 
