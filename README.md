@@ -7,7 +7,50 @@
 
 ## Daftar Isi
 
-(daftar isi)
+- [Jarkom-Modul-2-IT24-2024](#jarkom-modul-2-it24-2024)
+	- [Daftar Isi](#daftar-isi)
+	- [Pendahuluan](#pendahuluan)
+	- [Topologi](#topologi)
+	- [Tabel IP](#tabel-ip)
+	- [Konfigurasi IP](#konfigurasi-ip)
+		- [Paradis (Router/DHCP Relay)](#paradis-routerdhcp-relay)
+		- [Tybur (DHCP Server)](#tybur-dhcp-server)
+		- [Fritz (DNS Server)](#fritz-dns-server)
+		- [Warhammer (Database Server)](#warhammer-database-server)
+		- [Beast (Load Balancer Laravel)](#beast-load-balancer-laravel)
+		- [Colossal (Load Balancer PHP)](#colossal-load-balancer-php)
+		- [Annie (Laravel Worker)](#annie-laravel-worker)
+		- [Bertholdt (Laravel Worker)](#bertholdt-laravel-worker)
+		- [Reiner (Laravel Worker)](#reiner-laravel-worker)
+		- [Armin (PHP Worker)](#armin-php-worker)
+		- [Eren (PHP Worker)](#eren-php-worker)
+		- [Mikasa (PHP Worker)](#mikasa-php-worker)
+		- [Zeke (Client)](#zeke-client)
+		- [Erwin (Client)](#erwin-client)
+	- [Script Awal](#script-awal)
+		- [Paradis (DHCP Relay)](#paradis-dhcp-relay)
+		- [Fritz (DNS Server)](#fritz-dns-server-1)
+		- [Tybur (DHCP Server)](#tybur-dhcp-server-1)
+		- [Laravel Worker](#laravel-worker)
+		- [PHP Worker](#php-worker)
+		- [Load Balancer](#load-balancer)
+		- [Client](#client)
+	- [Soal 0](#soal-0)
+		- [Konfigurasi pada Fritz (DNS Server)](#konfigurasi-pada-fritz-dns-server)
+	- [Soal 1](#soal-1)
+	- [Soal 2](#soal-2)
+		- [Konfigurasi pada Tybur (DHCP Server)](#konfigurasi-pada-tybur-dhcp-server)
+	- [Soal 3](#soal-3)
+		- [Konfigurasi pada Tybur (DHCP Server)](#konfigurasi-pada-tybur-dhcp-server-1)
+	- [Soal 4](#soal-4)
+		- [Konfigurasi pada Paradis (DHCP Relay)](#konfigurasi-pada-paradis-dhcp-relay)
+		- [Konfigurasi pada Tybur (DHCP Server)](#konfigurasi-pada-tybur-dhcp-server-2)
+	- [Soal 5](#soal-5)
+		- [Konfigurasi pada Tybur (DHCP Server)](#konfigurasi-pada-tybur-dhcp-server-3)
+		- [Bukti Client Terhubung](#bukti-client-terhubung)
+	- [Soal 6](#soal-6)
+		- [Konfigurasi pada PHP Worker](#konfigurasi-pada-php-worker)
+
 
 ## Pendahuluan
 
@@ -439,3 +482,49 @@ service isc-dhcp-server restart
 ### Bukti Client Terhubung
 
 ![client dhcp](assets/gallery/lease.png)
+
+## Soal 6
+
+> Armin berinisiasi untuk memerintahkan setiap worker PHP untuk melakukan konfigurasi virtual host untuk website berikut https://intip.in/BangsaEldia dengan menggunakan php 7.3 
+
+### Konfigurasi pada PHP Worker
+
+```sh
+service nginx start
+service php7.3-fpm start
+
+mkdir -p /var/www/eldia.it24.com
+
+wget --no-check-certificate 'https://drive.google.com/uc?export=download&id=1TvebIeMQjRjFURKVtA32lO9aL7U2msd6' -O /root/bangsaEldia.zip
+unzip -o bangsaEldia.zip -d /var/www/eldia.it24.com
+
+cp /etc/nginx/sites-available/default /etc/nginx/sites-available/eldia.it24.com
+ln -s /etc/nginx/sites-available/eldia.it24.com /etc/nginx/sites-enabled/
+rm /etc/nginx/sites-enabled/default
+
+echo '
+server {
+  listen 80;
+  listen [::]:80;
+
+  root /var/www/eldia.it24.com;
+  index index.php index.html index.htm;
+
+  server_name eldia.it24.com;
+
+  location / {
+    try_files $uri $uri/ =404;
+  }
+
+  location ~ \.php$ {
+    include snippets/fastcgi-php.conf;
+    fastcgi_pass unix:/var/run/php/php7.3-fpm.sock;
+  }
+
+  location ~ /\.ht {
+    deny all;
+  }
+}' > /etc/nginx/sites-available/eldia.it24.com
+
+service nginx restart
+```
