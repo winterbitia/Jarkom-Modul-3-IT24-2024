@@ -33,7 +33,8 @@
 		- [Tybur (DHCP Server)](#tybur-dhcp-server-1)
 		- [Laravel Worker](#laravel-worker)
 		- [PHP Worker](#php-worker)
-		- [Load Balancer](#load-balancer)
+		- [Load Balancer PHP](#load-balancer-php)
+		- [Load Balancer "Laravel"](#load-balancer-laravel)
 		- [Client](#client)
 	- [Soal 0](#soal-0)
 		- [Konfigurasi pada Fritz (DNS Server)](#konfigurasi-pada-fritz-dns-server)
@@ -50,6 +51,9 @@
 		- [Bukti Client Terhubung](#bukti-client-terhubung)
 	- [Soal 6](#soal-6)
 		- [Konfigurasi pada PHP Worker](#konfigurasi-pada-php-worker)
+	- [Soal 7](#soal-7)
+		- [Konfigurasi pada Colossal (Load Balancer PHP)](#konfigurasi-pada-colossal-load-balancer-php)
+		- [Konfigurasi pada Fritz (DNS Server)](#konfigurasi-pada-fritz-dns-server-1)
 
 
 ## Pendahuluan
@@ -253,8 +257,22 @@ apt install isc-dhcp-server -y
 ### Laravel Worker
 
 ### PHP Worker
+```sh
+echo 'nameserver 192.245.4.3' > /etc/resolv.conf   # DNS Server 
+apt-get update
+apt-get install nginx -y
+apt-get install wget unzip -y
+apt-get install php7.3-fpm php7.3-common php7.3-mysql php7.3-gmp php7.3-curl php7.3-intl php7.3-mbstring php7.3-xmlrpc php7.3-gd php7.3-xml php7.3-cli php7.3-zip -y
+```
 
-### Load Balancer
+### Load Balancer PHP
+```sh
+echo 'nameserver 192.245.4.3' > /etc/resolv.conf   # DNS Server 
+apt-get update
+apt-get install nginx -y
+```
+
+### Load Balancer "Laravel"
 
 ### Client
 ```
@@ -527,4 +545,104 @@ server {
 }' > /etc/nginx/sites-available/eldia.it24.com
 
 service nginx restart
+```
+
+## Soal 7
+
+### Konfigurasi pada Colossal (Load Balancer PHP)
+```sh
+cp /etc/nginx/sites-available/default /etc/nginx/sites-available/lb_php
+
+echo ' upstream worker {
+        #least_conn;
+        #ip_hash;
+    server 192.245.2.2;
+    server 192.245.2.3;
+    server 192.245.2.4;
+}
+
+server {
+    listen 80;
+    server_name eldia.it24.com www.eldia.it24.com;
+
+    root /var/www/html;
+
+    index index.html index.htm index.nginx-debian.html index.php;
+
+    server_name _;
+
+    location / {
+        proxy_pass http://worker;
+    }
+} ' > /etc/nginx/sites-available/lb_php
+
+ln -s /etc/nginx/sites-available/lb_php /etc/nginx/sites-enabled/
+rm /etc/nginx/sites-enabled/default
+
+service nginx restart
+```
+
+### Konfigurasi pada Fritz (DNS Server)
+
+Ubah untuk mengarahkan eldia.it24.com ke IP Colossal (Load Balancer PHP)
+
+```sh
+echo 'zone "marley.it24.com" {
+    type master;
+    file "/etc/bind/sites/marley.it24.com";
+};
+zone "eldia.it24.com" {
+    type master;
+    file "/etc/bind/sites/eldia.it24.com";
+};' > /etc/bind/named.conf.local
+
+mkdir -p /etc/bind/sites
+cp /etc/bind/db.local /etc/bind/sites/marley.it24.com
+cp /etc/bind/db.local /etc/bind/sites/eldia.it24.com
+
+echo ';
+; BIND data file for local loopback interface
+;
+$TTL    604800
+@       IN      SOA     marley.it24.com. root.marley.it24.com. (
+                        2024102301      ; Serial
+                        604800         ; Refresh
+                        86400         ; Retry
+                        2419200         ; Expire
+                        604800 )       ; Negative Cache TTL
+;
+@       IN      NS      marley.it24.com.
+@       IN      A       192.245.1.2    ; IP Annie
+www     IN      CNAME   marley.it24.com.' > /etc/bind/sites/marley.it24.com
+
+echo ';
+; BIND data file for local loopback interface
+;
+$TTL    604800
+@       IN      SOA     eldia.it24.com. root.eldia.it24.com. (
+                            2024102301         ; Serial
+                            604800              ; Refresh
+                            86400              ; Retry
+                            2419200              ; Expire
+                            604800 )            ; Negative Cache TTL
+;
+@       IN      NS      eldia.it24.com.
+@       IN      A       192.245.3.4    ; IP Colossal
+www     IN      CNAME   eldia.it24.com.' > /etc/bind/sites/eldia.it24.com
+
+echo 'options {
+    directory "/var/cache/bind";
+
+    forwarders {
+        192.168.122.1;
+    };
+
+    // dnssec-validation auto;
+
+    allow-query { any; };
+    auth-nxdomain no;    # conform to RFC1035
+    listen-on-v6 { any; };
+};' > /etc/bind/named.conf.options
+
+service bind9 restart
 ```

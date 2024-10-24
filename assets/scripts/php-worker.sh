@@ -13,8 +13,6 @@ wget --no-check-certificate 'https://drive.google.com/uc?export=download&id=1Tve
 unzip -o bangsaEldia.zip -d /var/www/eldia.it24.com
 
 cp /etc/nginx/sites-available/default /etc/nginx/sites-available/eldia.it24.com
-ln -s /etc/nginx/sites-available/eldia.it24.com /etc/nginx/sites-enabled/
-rm /etc/nginx/sites-enabled/default
 
 echo '
 server {
@@ -40,4 +38,6 @@ server {
   }
 }' > /etc/nginx/sites-available/eldia.it24.com
 
+ln -s /etc/nginx/sites-available/eldia.it24.com /etc/nginx/sites-enabled/
+rm /etc/nginx/sites-enabled/default
 service nginx restart

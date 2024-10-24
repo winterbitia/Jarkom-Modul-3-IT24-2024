@@ -43,7 +43,8 @@ $TTL    604800
                             604800 )            ; Negative Cache TTL
 ;
 @       IN      NS      eldia.it24.com.
-@       IN      A       192.245.2.2    ; IP Armin
+;@       IN      A       192.245.2.2    ; IP Armin
+@       IN      A       192.245.3.4    ; IP Colossal
 www     IN      CNAME   eldia.it24.com.' > /etc/bind/sites/eldia.it24.com
 
 echo 'options {
