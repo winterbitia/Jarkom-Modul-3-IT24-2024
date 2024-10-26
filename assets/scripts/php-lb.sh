@@ -26,6 +26,11 @@ server {
     server_name _;
 
     location / {
+        allow 192.245.1.77;
+        allow 192.245.1.88;
+        allow 192.245.2.144;
+        allow 192.245.2.156;
+        deny all;
         proxy_pass http://worker;
     }
 

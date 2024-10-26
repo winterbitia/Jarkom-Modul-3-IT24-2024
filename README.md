@@ -61,6 +61,9 @@
 		- [Konfigurasi pada Colossal (Load Balancer PHP)](#konfigurasi-pada-colossal-load-balancer-php-1)
 	- [Soal 11](#soal-11)
 		- [Konfigurasi pada Colossal (Load Balancer PHP)](#konfigurasi-pada-colossal-load-balancer-php-2)
+	- [Soal 12](#soal-12)
+		- [Konfigurasi pada Colossal (Load Balancer PHP)](#konfigurasi-pada-colossal-load-balancer-php-3)
+		- [Konfigurasi tambahan pada Tybur (DHCP Server)](#konfigurasi-tambahan-pada-tybur-dhcp-server)
 
 
 ## Pendahuluan
@@ -228,12 +231,14 @@ iface eth0 inet static
 ```
 auto eth0
 iface eth0 inet dhcp
+hwaddress ether 7a:47:21:fc:07:a4
 ```
 
 ### Erwin (Client)
 ```
 auto eth0
 iface eth0 inet dhcp
+hwaddress ether ba:89:d6:0f:57:f8
 ```
 
 ## Script Awal
@@ -762,4 +767,76 @@ ln -s /etc/nginx/sites-available/lb_php /etc/nginx/sites-enabled/
 rm /etc/nginx/sites-enabled/default
 
 service nginx restart
+```
+
+## Soal 12
+
+> Selanjutnya Colossal ini hanya boleh diakses oleh client dengan IP [Prefix IP].1.77, [Prefix IP].1.88, [Prefix IP].2.144, dan [Prefix IP].2.156. hint: (fixed in dulu clientnya)
+
+### Konfigurasi pada Colossal (Load Balancer PHP)
+```sh
+mkdir -p /etc/nginx/supersecret
+htpasswd -b -c /etc/nginx/supersecret/htpasswd arminannie jrkmit24
+
+cp /etc/nginx/sites-available/default /etc/nginx/sites-available/lb_php
+
+echo ' upstream worker {
+        #least_conn;
+        #ip_hash;
+    server 192.245.2.2;
+    server 192.245.2.3;
+    server 192.245.2.4;
+}
+
+server {
+    listen 80;
+    server_name eldia.it24.com www.eldia.it24.com;
+
+    root /var/www/html;
+
+    index index.html index.htm index.nginx-debian.html index.php;
+
+    server_name _;
+
+    location / {
+        allow 192.245.1.77;
+        allow 192.245.1.88;
+        allow 192.245.2.144;
+        allow 192.245.2.156;
+        deny all;
+        proxy_pass http://worker;
+    }
+
+    location /titan {
+        proxy_pass https://attackontitan.fandom.com;
+        proxy_set_header Host attackontitan.fandom.com;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+    }
+
+    auth_basic "Restricted Content";
+    auth_basic_user_file /etc/nginx/supersecret/htpasswd;
+} ' > /etc/nginx/sites-available/lb_php
+
+ln -s /etc/nginx/sites-available/lb_php /etc/nginx/sites-enabled/
+rm /etc/nginx/sites-enabled/default
+
+service nginx restart
+```
+
+### Konfigurasi tambahan pada Tybur (DHCP Server)
+
+Hanya untuk testing pada client agar IP tetap fixed, dan pastikan untuk menambahkan fixed hardware ethernet pada konfigurasi IP.
+
+```conf
+host Zeke {
+    hardware ethernet 7a:47:21:fc:07:a4;
+    fixed-address 192.245.1.77;
+}
+
+host Erwin {
+    hardware ethernet ba:89:d6:0f:57:f8;
+    fixed-address 192.245.2.144;
+}
 ```

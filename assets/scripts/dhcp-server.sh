@@ -35,6 +35,16 @@ subnet 192.245.3.0 netmask 255.255.255.0 {
 subnet 192.245.4.0 netmask 255.255.255.0 {
 	option routers 192.245.4.1;
 }
+
+host Zeke {
+    hardware ethernet 7a:47:21:fc:07:a4;
+    fixed-address 192.245.1.77;
+}
+
+host Erwin {
+    hardware ethernet ba:89:d6:0f:57:f8;
+    fixed-address 192.245.2.144;
+}
 ' > /etc/dhcp/dhcpd.conf
 
 service isc-dhcp-server restart
