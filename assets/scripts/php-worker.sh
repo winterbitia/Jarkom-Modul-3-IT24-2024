@@ -10,7 +10,7 @@ service php7.3-fpm start
 mkdir -p /var/www/eldia.it24.com
 
 wget --no-check-certificate 'https://drive.google.com/uc?export=download&id=1TvebIeMQjRjFURKVtA32lO9aL7U2msd6' -O /root/bangsaEldia.zip
-unzip -o bangsaEldia.zip -d /var/www/eldia.it24.com
+unzip -o /root/bangsaEldia.zip -d /var/www/eldia.it24.com
 
 cp /etc/nginx/sites-available/default /etc/nginx/sites-available/eldia.it24.com
 

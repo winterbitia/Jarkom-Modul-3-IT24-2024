@@ -1,6 +1,9 @@
 echo 'nameserver 192.245.4.3' > /etc/resolv.conf   # DNS Server 
 apt-get update
-apt-get install nginx -y
+apt-get install nginx apache2-utils -y
+
+mkdir -p /etc/nginx/supersecret
+htpasswd -b -c /etc/nginx/supersecret/htpasswd arminannie jrkmit24
 
 cp /etc/nginx/sites-available/default /etc/nginx/sites-available/lb_php
 
@@ -25,6 +28,17 @@ server {
     location / {
         proxy_pass http://worker;
     }
+
+    location /titan {
+        proxy_pass https://attackontitan.fandom.com;
+        proxy_set_header Host attackontitan.fandom.com;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+    }
+
+    auth_basic "Restricted Content";
+    auth_basic_user_file /etc/nginx/supersecret/htpasswd;
 } ' > /etc/nginx/sites-available/lb_php
 
 ln -s /etc/nginx/sites-available/lb_php /etc/nginx/sites-enabled/

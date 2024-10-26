@@ -58,6 +58,9 @@
 	- [Soal 8](#soal-8)
 	- [Soal 9](#soal-9)
 	- [Soal 10](#soal-10)
+		- [Konfigurasi pada Colossal (Load Balancer PHP)](#konfigurasi-pada-colossal-load-balancer-php-1)
+	- [Soal 11](#soal-11)
+		- [Konfigurasi pada Colossal (Load Balancer PHP)](#konfigurasi-pada-colossal-load-balancer-php-2)
 
 
 ## Pendahuluan
@@ -518,7 +521,7 @@ service php7.3-fpm start
 mkdir -p /var/www/eldia.it24.com
 
 wget --no-check-certificate 'https://drive.google.com/uc?export=download&id=1TvebIeMQjRjFURKVtA32lO9aL7U2msd6' -O /root/bangsaEldia.zip
-unzip -o bangsaEldia.zip -d /var/www/eldia.it24.com
+unzip -o /root/bangsaEldia.zip -d /var/www/eldia.it24.com
 
 cp /etc/nginx/sites-available/default /etc/nginx/sites-available/eldia.it24.com
 ln -s /etc/nginx/sites-available/eldia.it24.com /etc/nginx/sites-enabled/
@@ -670,3 +673,93 @@ d. Analisis
 ## Soal 10
 
 > Selanjutnya coba tambahkan keamanan dengan konfigurasi autentikasi di Colossal dengan dengan kombinasi username: “arminannie” dan password: “jrkmyyy”, dengan yyy merupakan kode kelompok. Terakhir simpan file “htpasswd” nya di /etc/nginx/supersecret/ 
+
+### Konfigurasi pada Colossal (Load Balancer PHP)
+```sh
+mkdir -p /etc/nginx/supersecret
+htpasswd -b -c /etc/nginx/supersecret/htpasswd arminannie jrkmit24
+
+cp /etc/nginx/sites-available/default /etc/nginx/sites-available/lb_php
+
+echo ' upstream worker {
+        #least_conn;
+        #ip_hash;
+    server 192.245.2.2;
+    server 192.245.2.3;
+    server 192.245.2.4;
+}
+
+server {
+    listen 80;
+    server_name eldia.it24.com www.eldia.it24.com;
+
+    root /var/www/html;
+
+    index index.html index.htm index.nginx-debian.html index.php;
+
+    server_name _;
+
+    location / {
+        proxy_pass http://worker;
+    }
+
+    auth_basic "Restricted Content";
+    auth_basic_user_file /etc/nginx/supersecret/htpasswd;
+} ' > /etc/nginx/sites-available/lb_php
+
+ln -s /etc/nginx/sites-available/lb_php /etc/nginx/sites-enabled/
+rm /etc/nginx/sites-enabled/default
+
+service nginx restart
+```
+
+## Soal 11
+
+> Lalu buat untuk setiap request yang mengandung /titan akan di proxy passing menuju halaman https://attackontitan.fandom.com/wiki/Attack_on_Titan_Wiki hint: (proxy_pass)
+
+### Konfigurasi pada Colossal (Load Balancer PHP)
+```sh
+mkdir -p /etc/nginx/supersecret
+htpasswd -b -c /etc/nginx/supersecret/htpasswd arminannie jrkmit24
+
+cp /etc/nginx/sites-available/default /etc/nginx/sites-available/lb_php
+
+echo ' upstream worker {
+        #least_conn;
+        #ip_hash;
+    server 192.245.2.2;
+    server 192.245.2.3;
+    server 192.245.2.4;
+}
+
+server {
+    listen 80;
+    server_name eldia.it24.com www.eldia.it24.com;
+
+    root /var/www/html;
+
+    index index.html index.htm index.nginx-debian.html index.php;
+
+    server_name _;
+
+    location / {
+        proxy_pass http://worker;
+    }
+
+    location /titan {
+        proxy_pass https://attackontitan.fandom.com;
+        proxy_set_header Host attackontitan.fandom.com;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+    }
+
+    auth_basic "Restricted Content";
+    auth_basic_user_file /etc/nginx/supersecret/htpasswd;
+} ' > /etc/nginx/sites-available/lb_php
+
+ln -s /etc/nginx/sites-available/lb_php /etc/nginx/sites-enabled/
+rm /etc/nginx/sites-enabled/default
+
+service nginx restart
+```
