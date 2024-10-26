@@ -573,6 +573,10 @@ server {
 service nginx restart
 ```
 
+Bila website sudah terhubung dengan baik, maka ini akan terlihat:
+
+![web](assets/gallery/web.png)
+
 ## Soal 7
 
 > Dikarenakan Armin sudah mendapatkan kekuatan titan colossal, maka bantulah kaum eldia menggunakan colossal agar dapat bekerja sama dengan baik. Kemudian lakukan testing dengan 6000 request dan 200 request/second. 
@@ -732,6 +736,10 @@ rm /etc/nginx/sites-enabled/default
 service nginx restart
 ```
 
+Akan muncul kegagalan auth bila salah kredensial:
+![auth](assets/gallery/auth.png)
+
+
 ## Soal 11
 
 > Lalu buat untuk setiap request yang mengandung /titan akan di proxy passing menuju halaman https://attackontitan.fandom.com/wiki/Attack_on_Titan_Wiki hint: (proxy_pass)
@@ -782,6 +790,10 @@ rm /etc/nginx/sites-enabled/default
 
 service nginx restart
 ```
+
+Akan terlihat Attack on Titan wiki bila memasukkan `lynx eldia.it24.com/titan`:
+
+![attack on titan](assets/gallery/aot.png)
 
 ## Soal 12
 
@@ -838,6 +850,10 @@ rm /etc/nginx/sites-enabled/default
 
 service nginx restart
 ```
+
+Bila IP tidak sesuai maka akan muncul sebagai berikut:
+
+![failed ip](assets/gallery/fixed.png)
 
 ### Konfigurasi tambahan pada Tybur (DHCP Server)
 
@@ -908,3 +924,5 @@ Untuk memastikan setiap worker "Laravel" dapat connect kepada database yang dibu
 ```
 mysql --host=192.245.3.2 --port=3306 --user=it24 --password=it24 db_it24 -e "SHOW DATABASES;"
 ```
+
+![database](assets/gallery/db.png)
