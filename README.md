@@ -31,10 +31,10 @@
 		- [Paradis (DHCP Relay)](#paradis-dhcp-relay)
 		- [Fritz (DNS Server)](#fritz-dns-server-1)
 		- [Tybur (DHCP Server)](#tybur-dhcp-server-1)
+		- [Warhammer (Database Server)](#warhammer-database-server-1)
 		- [Laravel Worker](#laravel-worker)
 		- [PHP Worker](#php-worker)
 		- [Load Balancer PHP](#load-balancer-php)
-		- [Load Balancer "Laravel"](#load-balancer-laravel)
 		- [Client](#client)
 	- [Soal 0](#soal-0)
 		- [Konfigurasi pada Fritz (DNS Server)](#konfigurasi-pada-fritz-dns-server)
@@ -64,6 +64,10 @@
 	- [Soal 12](#soal-12)
 		- [Konfigurasi pada Colossal (Load Balancer PHP)](#konfigurasi-pada-colossal-load-balancer-php-3)
 		- [Konfigurasi tambahan pada Tybur (DHCP Server)](#konfigurasi-tambahan-pada-tybur-dhcp-server)
+	- [Soal 13](#soal-13)
+		- [Konfigurasi pada Warhammer (Database)](#konfigurasi-pada-warhammer-database)
+		- [Cara Menambahkan User](#cara-menambahkan-user)
+		- [Check pada Setiap Worker](#check-pada-setiap-worker)
 
 
 ## Pendahuluan
@@ -244,7 +248,7 @@ hwaddress ether ba:89:d6:0f:57:f8
 ## Script Awal
 
 ### Paradis (DHCP Relay)
-```
+```sh
 iptables -t nat -A POSTROUTING -o eth0 -j MASQUERADE -s 192.245.0.0/16
 echo nameserver 192.168.122.1 > /etc/resolv.conf
 apt-get update
@@ -253,21 +257,33 @@ service isc-dhcp-relay start
 ```
 
 ### Fritz (DNS Server)
-```
+```sh
 echo 'nameserver 192.168.122.1' > /etc/resolv.conf
 apt-get update
 apt-get install bind9 -y  
 ```
 
 ### Tybur (DHCP Server)
-```
+```sh
 echo 'nameserver 192.245.4.3' > /etc/resolv.conf   # DNS Server 
 apt-get update
 apt install isc-dhcp-server -y
 ```
 
-### Laravel Worker
+### Warhammer (Database Server)
+```sh
+echo 'nameserver 192.245.4.3' > /etc/resolv.conf   # DNS Server 
+apt-get update
+apt-get install mariadb-server -y
+service mysql start
+```
 
+### Laravel Worker
+```sh
+echo 'nameserver 192.245.4.3' > /etc/resolv.conf   # DNS Server 
+apt-get update
+apt-get install mariadb-client -y
+```
 ### PHP Worker
 ```sh
 echo 'nameserver 192.245.4.3' > /etc/resolv.conf   # DNS Server 
@@ -283,8 +299,6 @@ echo 'nameserver 192.245.4.3' > /etc/resolv.conf   # DNS Server
 apt-get update
 apt-get install nginx -y
 ```
-
-### Load Balancer "Laravel"
 
 ### Client
 ```
@@ -827,7 +841,7 @@ service nginx restart
 
 ### Konfigurasi tambahan pada Tybur (DHCP Server)
 
-Hanya untuk testing pada client agar IP tetap fixed, dan pastikan untuk menambahkan fixed hardware ethernet pada konfigurasi IP.
+Hanya untuk testing pada client agar IP tetap fixed, dan pastikan untuk menambahkan fixed hardware ethernet pada konfigurasi IP. Bisa dicomment bila ingin melihat pesan gagal.
 
 ```conf
 host Zeke {
@@ -839,4 +853,58 @@ host Erwin {
     hardware ethernet ba:89:d6:0f:57:f8;
     fixed-address 192.245.2.144;
 }
+```
+
+## Soal 13
+
+### Konfigurasi pada Warhammer (Database)
+```sh
+apt-get update
+apt-get install mariadb-server -y
+service mysql start
+
+echo '# This group is read both by the client and the server
+# use it for options that affect everything
+[client-server]
+
+# Import all .cnf files from configuration directory
+!includedir /etc/mysql/conf.d/
+!includedir /etc/mysql/mariadb.conf.d/
+
+# Options affecting the MySQL server (mysqld)
+[mysqld]
+skip-networking=0
+skip-bind-address
+' > /etc/mysql/my.cnf 
+
+sed -i 's/127.0.0.1/0.0.0.0/g' /etc/mysql/mariadb.conf.d/50-server.cnf
+
+service mysql restart
+```
+
+### Cara Menambahkan User
+
+Set up root user tanpa password (wow sangat tidak secure!):
+
+```
+mysql -u root -p
+Enter password: (kosong)
+
+Menambahkan user it24 pada database:
+
+```mysql
+CREATE USER 'it24'@'%' IDENTIFIED BY 'it24';
+CREATE USER 'it24'@'localhost' IDENTIFIED BY 'it24';
+CREATE DATABASE db_it24;
+GRANT ALL PRIVILEGES ON *.* TO 'it24'@'%';
+GRANT ALL PRIVILEGES ON *.* TO 'it24'@'localhost';
+FLUSH PRIVILEGES;
+```
+
+### Check pada Setiap Worker
+
+Untuk memastikan setiap worker "Laravel" dapat connect kepada database yang dibuat dalam Warhammer:
+
+```
+mysql --host=192.245.3.2 --port=3306 --user=it24 --password=it24 db_it24 -e "SHOW DATABASES;"
 ```
