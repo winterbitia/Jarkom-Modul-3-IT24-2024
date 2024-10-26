@@ -1,4 +1,4 @@
-# Jarkom-Modul-2-IT24-2024
+# Jarkom-Modul-3-IT24-2024
 
 | Nama | NRP |
 |---|---|
