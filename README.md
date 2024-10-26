@@ -774,7 +774,7 @@ server {
     }
 
     location /titan {
-        proxy_pass https://attackontitan.fandom.com;
+        proxy_pass http://attackontitan.fandom.com;
         proxy_set_header Host attackontitan.fandom.com;
         proxy_set_header X-Real-IP $remote_addr;
         proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
@@ -834,7 +834,7 @@ server {
     }
 
     location /titan {
-        proxy_pass https://attackontitan.fandom.com;
+        proxy_pass http://attackontitan.fandom.com;
         proxy_set_header Host attackontitan.fandom.com;
         proxy_set_header X-Real-IP $remote_addr;
         proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
