@@ -693,12 +693,13 @@ service bind9 restart
 
 > d. Analisis
 
-Benchmarking dan Report: [Laporan Kerja Armin](benchmarking-8.md)
+Benchmarking dan Report: [Laporan Kerja Armin](benchmarking.md)
 
 ## Soal 9
 
 > Dengan menggunakan algoritma Least-Connection, lakukan testing dengan menggunakan 3 worker, 2 worker, dan 1 worker sebanyak 1000 request dengan 10 request/second, kemudian tambahkan grafiknya pada “laporan kerja Armin”.
 
+Benchmarking dan Report: [Laporan Kerja Armin](benchmarking.md)
 ## Soal 10
 
 > Selanjutnya coba tambahkan keamanan dengan konfigurasi autentikasi di Colossal dengan dengan kombinasi username: “arminannie” dan password: “jrkmyyy”, dengan yyy merupakan kode kelompok. Terakhir simpan file “htpasswd” nya di /etc/nginx/supersecret/ 
