@@ -51,6 +51,8 @@ service nginx restart
 - Performa Tertinggi: Metode **IP Hash** memiliki jumlah request per detik tertinggi dengan 1803.36 request/detik, dengan waktu per request rata-rata yang lebih rendah (0.555 ms) dan transfer rate yang lebih tinggi (736.14 Kbytes/sec). Ini menunjukkan performa yang lebih baik dibandingkan dua metode lainnya.
 - Stabilitas Waktu Respon: Metode **Round Robin** juga menunjukkan performa yang baik dengan waktu per request rata-rata yang cukup rendah, yaitu 0.589 ms, tetapi sedikit lebih lambat dibandingkan **IP Hash**.
 - Performa Terendah: Metode **Least Connections** memiliki jumlah request per detik yang paling rendah (1257.11 request/detik) dan waktu per request yang lebih tinggi (0.795 ms). Selain itu, terdapat variasi waktu yang signifikan pada processing time dan waiting time, terutama dengan nilai maksimum mencapai 310 ms untuk request terpanjang.
+### Grafik
+![](assets/gallery/8rps.png)
 
 ## No.9
 ### Script Colossal (Load Balancer PHP)
@@ -111,3 +113,8 @@ service nginx restart
 - Perbandingan Kinerja: **Worker1** adalah yang paling cepat, diikuti oleh **Worker2**, sedangkan **Worker3** yang paling lambat dengan selisih yang cukup signifikan.
 - Efisiensi Load Balancing: Berdasarkan hasil ini, load balancer sebaiknya memprioritaskan **Worker1** dan **Worker2** untuk mendapatkan respons yang lebih cepat. **Worker3** sebaiknya digunakan sebagai cadangan atau untuk tugas yang tidak membutuhkan waktu respons cepat, mengingat kinerjanya yang jauh lebih rendah.
 - Rekomendasi: Untuk mengoptimalkan penanganan permintaan, load balancer bisa membatasi peran **Worker3** atau menyelidiki penyebab latensi tinggi (misalnya konfigurasi server atau masalah jaringan) yang terjadi pada **Worker3**.
+### Grafik
+#### Request per Second
+![](assets/gallery/9rps.png)
+#### Average Time per Request
+![](assets/gallery/9avg.png)
