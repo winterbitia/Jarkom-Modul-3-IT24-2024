@@ -693,7 +693,7 @@ service bind9 restart
 
 > d. Analisis
 
-Benchmarking dan [Report](benchmarking.md)
+Benchmarking dan [Report](benchmarking-8.md)
 
 ## Soal 9
 
