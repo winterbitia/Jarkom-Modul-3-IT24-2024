@@ -679,7 +679,7 @@ echo 'options {
 service bind9 restart
 ```
 ### Test Request
-
+![](assets/gallery/erwin-7.png)
 
 ## Soal 8
 
