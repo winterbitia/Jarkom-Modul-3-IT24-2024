@@ -684,9 +684,13 @@ service bind9 restart
 ## Soal 8
 
 > Karena Erwin meminta “laporan kerja Armin”, maka dari itu buatlah analisis hasil testing dengan 1000 request dan 75 request/second untuk masing-masing algoritma Load Balancer dengan ketentuan sebagai berikut:
+
 a. Nama Algoritma Load Balancer
+
 b. Report hasil testing pada Apache Benchmark
+
 c. Grafik request per second untuk masing masing algoritma. 
+
 d. Analisis
 
 ## Soal 9
