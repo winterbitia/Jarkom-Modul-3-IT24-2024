@@ -112,7 +112,7 @@ service nginx restart
 ### Analisis
 - Perbandingan Kinerja: **Worker1** adalah yang paling cepat, diikuti oleh **Worker2**, sedangkan **Worker3** yang paling lambat dengan selisih yang cukup signifikan.
 - Efisiensi Load Balancing: Berdasarkan hasil ini, load balancer sebaiknya memprioritaskan **Worker1** dan **Worker2** untuk mendapatkan respons yang lebih cepat. **Worker3** sebaiknya digunakan sebagai cadangan atau untuk tugas yang tidak membutuhkan waktu respons cepat, mengingat kinerjanya yang jauh lebih rendah.
-- Rekomendasi: Untuk mengoptimalkan penanganan permintaan, load balancer bisa membatasi peran **Worker3** atau menyelidiki penyebab latensi tinggi (misalnya konfigurasi server atau masalah jaringan) yang terjadi pada **Worker3**.
+
 ### Grafik
 #### Request per Second
 ![](assets/gallery/9rps.png)
