@@ -7,67 +7,67 @@
 
 ## Daftar Isi
 
-- [Jarkom-Modul-2-IT24-2024](#jarkom-modul-2-it24-2024)
-	- [Daftar Isi](#daftar-isi)
-	- [Pendahuluan](#pendahuluan)
-	- [Topologi](#topologi)
-	- [Tabel IP](#tabel-ip)
-	- [Konfigurasi IP](#konfigurasi-ip)
-		- [Paradis (Router/DHCP Relay)](#paradis-routerdhcp-relay)
-		- [Tybur (DHCP Server)](#tybur-dhcp-server)
-		- [Fritz (DNS Server)](#fritz-dns-server)
-		- [Warhammer (Database Server)](#warhammer-database-server)
-		- [Beast (Load Balancer Laravel)](#beast-load-balancer-laravel)
-		- [Colossal (Load Balancer PHP)](#colossal-load-balancer-php)
-		- [Annie (Laravel Worker)](#annie-laravel-worker)
-		- [Bertholdt (Laravel Worker)](#bertholdt-laravel-worker)
-		- [Reiner (Laravel Worker)](#reiner-laravel-worker)
-		- [Armin (PHP Worker)](#armin-php-worker)
-		- [Eren (PHP Worker)](#eren-php-worker)
-		- [Mikasa (PHP Worker)](#mikasa-php-worker)
-		- [Zeke (Client)](#zeke-client)
-		- [Erwin (Client)](#erwin-client)
-	- [Script Awal](#script-awal)
-		- [Paradis (DHCP Relay)](#paradis-dhcp-relay)
-		- [Fritz (DNS Server)](#fritz-dns-server-1)
-		- [Tybur (DHCP Server)](#tybur-dhcp-server-1)
-		- [Warhammer (Database Server)](#warhammer-database-server-1)
-		- [Laravel Worker](#laravel-worker)
-		- [PHP Worker](#php-worker)
-		- [Load Balancer PHP](#load-balancer-php)
-		- [Client](#client)
-	- [Soal 0](#soal-0)
-		- [Konfigurasi pada Fritz (DNS Server)](#konfigurasi-pada-fritz-dns-server)
-	- [Soal 1](#soal-1)
-	- [Soal 2](#soal-2)
-		- [Konfigurasi pada Tybur (DHCP Server)](#konfigurasi-pada-tybur-dhcp-server)
-	- [Soal 3](#soal-3)
-		- [Konfigurasi pada Tybur (DHCP Server)](#konfigurasi-pada-tybur-dhcp-server-1)
-	- [Soal 4](#soal-4)
-		- [Konfigurasi pada Paradis (DHCP Relay)](#konfigurasi-pada-paradis-dhcp-relay)
-		- [Konfigurasi pada Tybur (DHCP Server)](#konfigurasi-pada-tybur-dhcp-server-2)
-	- [Soal 5](#soal-5)
-		- [Konfigurasi pada Tybur (DHCP Server)](#konfigurasi-pada-tybur-dhcp-server-3)
-		- [Bukti Client Terhubung](#bukti-client-terhubung)
-	- [Soal 6](#soal-6)
-		- [Konfigurasi pada PHP Worker](#konfigurasi-pada-php-worker)
-	- [Soal 7](#soal-7)
-		- [Konfigurasi pada Colossal (Load Balancer PHP)](#konfigurasi-pada-colossal-load-balancer-php)
-		- [Konfigurasi pada Fritz (DNS Server)](#konfigurasi-pada-fritz-dns-server-1)
-		- [Test Request](#test-request)
-	- [Soal 8](#soal-8)
-	- [Soal 9](#soal-9)
-	- [Soal 10](#soal-10)
-		- [Konfigurasi pada Colossal (Load Balancer PHP)](#konfigurasi-pada-colossal-load-balancer-php-1)
-	- [Soal 11](#soal-11)
-		- [Konfigurasi pada Colossal (Load Balancer PHP)](#konfigurasi-pada-colossal-load-balancer-php-2)
-	- [Soal 12](#soal-12)
-		- [Konfigurasi pada Colossal (Load Balancer PHP)](#konfigurasi-pada-colossal-load-balancer-php-3)
-		- [Konfigurasi tambahan pada Tybur (DHCP Server)](#konfigurasi-tambahan-pada-tybur-dhcp-server)
-	- [Soal 13](#soal-13)
-		- [Konfigurasi pada Warhammer (Database)](#konfigurasi-pada-warhammer-database)
-		- [Cara Menambahkan User](#cara-menambahkan-user)
-		- [Check pada Setiap Worker](#check-pada-setiap-worker)
+- [Jarkom-Modul-3-IT24-2024](#jarkom-modul-3-it24-2024)
+  - [Daftar Isi](#daftar-isi)
+  - [Pendahuluan](#pendahuluan)
+  - [Topologi](#topologi)
+  - [Tabel IP](#tabel-ip)
+  - [Konfigurasi IP](#konfigurasi-ip)
+    - [Paradis (Router/DHCP Relay)](#paradis-routerdhcp-relay)
+    - [Tybur (DHCP Server)](#tybur-dhcp-server)
+    - [Fritz (DNS Server)](#fritz-dns-server)
+    - [Warhammer (Database Server)](#warhammer-database-server)
+    - [Beast (Load Balancer Laravel)](#beast-load-balancer-laravel)
+    - [Colossal (Load Balancer PHP)](#colossal-load-balancer-php)
+    - [Annie (Laravel Worker)](#annie-laravel-worker)
+    - [Bertholdt (Laravel Worker)](#bertholdt-laravel-worker)
+    - [Reiner (Laravel Worker)](#reiner-laravel-worker)
+    - [Armin (PHP Worker)](#armin-php-worker)
+    - [Eren (PHP Worker)](#eren-php-worker)
+    - [Mikasa (PHP Worker)](#mikasa-php-worker)
+    - [Zeke (Client)](#zeke-client)
+    - [Erwin (Client)](#erwin-client)
+  - [Script Awal](#script-awal)
+    - [Paradis (DHCP Relay)](#paradis-dhcp-relay)
+    - [Fritz (DNS Server)](#fritz-dns-server-1)
+    - [Tybur (DHCP Server)](#tybur-dhcp-server-1)
+    - [Warhammer (Database Server)](#warhammer-database-server-1)
+    - [Laravel Worker](#laravel-worker)
+    - [PHP Worker](#php-worker)
+    - [Load Balancer PHP](#load-balancer-php)
+    - [Client](#client)
+  - [Soal 0](#soal-0)
+    - [Konfigurasi pada Fritz (DNS Server)](#konfigurasi-pada-fritz-dns-server)
+  - [Soal 1](#soal-1)
+  - [Soal 2](#soal-2)
+    - [Konfigurasi pada Tybur (DHCP Server)](#konfigurasi-pada-tybur-dhcp-server)
+  - [Soal 3](#soal-3)
+    - [Konfigurasi pada Tybur (DHCP Server)](#konfigurasi-pada-tybur-dhcp-server-1)
+  - [Soal 4](#soal-4)
+    - [Konfigurasi pada Paradis (DHCP Relay)](#konfigurasi-pada-paradis-dhcp-relay)
+    - [Konfigurasi pada Tybur (DHCP Server)](#konfigurasi-pada-tybur-dhcp-server-2)
+  - [Soal 5](#soal-5)
+    - [Konfigurasi pada Tybur (DHCP Server)](#konfigurasi-pada-tybur-dhcp-server-3)
+    - [Bukti Client Terhubung](#bukti-client-terhubung)
+  - [Soal 6](#soal-6)
+    - [Konfigurasi pada PHP Worker](#konfigurasi-pada-php-worker)
+  - [Soal 7](#soal-7)
+    - [Konfigurasi pada Colossal (Load Balancer PHP)](#konfigurasi-pada-colossal-load-balancer-php)
+    - [Konfigurasi pada Fritz (DNS Server)](#konfigurasi-pada-fritz-dns-server-1)
+    - [Test Request](#test-request)
+  - [Soal 8](#soal-8)
+  - [Soal 9](#soal-9)
+  - [Soal 10](#soal-10)
+    - [Konfigurasi pada Colossal (Load Balancer PHP)](#konfigurasi-pada-colossal-load-balancer-php-1)
+  - [Soal 11](#soal-11)
+    - [Konfigurasi pada Colossal (Load Balancer PHP)](#konfigurasi-pada-colossal-load-balancer-php-2)
+  - [Soal 12](#soal-12)
+    - [Konfigurasi pada Colossal (Load Balancer PHP)](#konfigurasi-pada-colossal-load-balancer-php-3)
+    - [Konfigurasi tambahan pada Tybur (DHCP Server)](#konfigurasi-tambahan-pada-tybur-dhcp-server)
+  - [Soal 13](#soal-13)
+    - [Konfigurasi pada Warhammer (Database)](#konfigurasi-pada-warhammer-database)
+    - [Cara Menambahkan User](#cara-menambahkan-user)
+    - [Check pada Setiap Worker](#check-pada-setiap-worker)
 
 
 ## Pendahuluan
@@ -388,6 +388,11 @@ service bind9 restart
 
 ```sh
 echo '
+INTERFACESv4="eth0"
+INTERFACESv6=""
+' > /etc/default/isc-dhcp-server
+
+echo '
 subnet 192.245.1.0 netmask 255.255.255.0 {
 range 192.245.1.5 192.245.1.25;
 range 192.245.1.50 192.245.1.100;
@@ -404,6 +409,11 @@ service isc-dhcp-server restart
 ### Konfigurasi pada Tybur (DHCP Server)
 
 ```sh
+echo '
+INTERFACESv4="eth0"
+INTERFACESv6=""
+' > /etc/default/isc-dhcp-server
+
 echo '
 subnet 192.245.1.0 netmask 255.255.255.0 {
 	range 192.245.1.5 192.245.1.25;
@@ -879,6 +889,8 @@ host Erwin {
 ```
 
 ## Soal 13
+
+> Karena mengetahui bahwa ada keturunan marley yang mewarisi kekuatan titan, Zeke pun berinisiatif untuk menyimpan data data penting di Warhammer, dan semua data tersebut harus dapat diakses oleh anak buah kesayangannya, Annie, Reiner, dan Berthold. 
 
 ### Konfigurasi pada Warhammer (Database)
 ```sh
