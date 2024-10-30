@@ -297,7 +297,7 @@ apt-get install php7.3-fpm php7.3-common php7.3-mysql php7.3-gmp php7.3-curl php
 ```sh
 echo 'nameserver 192.245.4.3' > /etc/resolv.conf   # DNS Server 
 apt-get update
-apt-get install nginx -y
+apt-get install nginx apache2-utils -y
 ```
 
 ### Client
